@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.javaex.dao.UserDao;
 import com.javaex.util.WebUtil;
@@ -55,9 +56,71 @@ public class UserController extends HttpServlet {
 			
 			//로그인 폼
 			WebUtil.forward(request, response, "/WEB-INF/views/user/loginForm.jsp");
+			
 		}else if("login".equals(action)) {
+			System.out.println("user>login");
+			
+			String id = request.getParameter("id");
+			String password = request.getParameter("password");
+			System.out.println(id);
+			System.out.println(password);
+			
+			UserVo userVo = new UserVo(id, password); //id pw
+			
+			UserDao userDao = new UserDao();
+			UserVo authUser = userDao.selectUserByIdPw(userVo); //no name
+			
+			if(authUser != null) {//로그인 성공 
+				HttpSession session = request.getSession();
+				session.setAttribute("authUser", authUser);
+				session.setAttribute("userVo", userVo);
+				
+				WebUtil.redirect(request, response, "/mysite3/main");
+				
+				System.out.println(authUser);
+				System.out.println(userVo);
+
+				
+			} else { //로그인 실패
+				System.out.println("로그인 실패");
+				WebUtil.redirect(request, response, "/mysite3/user?action=loginform");
+			}
+		} else if("logout".equals(action)) {
+			System.out.println("user>logout");
+			
+			HttpSession session = request.getSession();
+			session.invalidate(); //session 지우기
+			
+			WebUtil.redirect(request, response, "/mysite3/main");
+		} else if("modifyform".equals(action)) {
+			System.out.println("modifyform: 수정");
+			
+			//수정폼
+			WebUtil.forward(request, response, "/WEB-INF/views/user/modifyForm.jsp");
+			
+		} else if("modify".equals(action)) {
+			System.out.println("user>modify");
+			
+			//파라미터에서 데이터 꺼내기
+			String password = request.getParameter("password");
+			String name = request.getParameter("name");
+			String gender = request.getParameter("gender");
+			
+			//데이터를 Vo로 묶기
+			UserVo userVo = new UserVo(password, name, gender);
+			System.out.println(userVo);
 			
 			
+			
+			//dao의 메소드로 수정 
+			UserDao userDao = new UserDao();
+			
+			UserVo authUser = userDao.modifyUser(userVo);
+			
+			HttpSession session = request.getSession();
+			session.setAttribute("authUser", authUser);
+			
+			//WebUtil.redirect(request, response, "/mysite3/main");
 			
 		} else {
 			System.out.println("action값을 다시 확인해주세요.");

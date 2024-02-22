@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="com.javaex.vo.UserVo" %> 
+<%@ page import="com.javaex.vo.UserVo" %>
 <%
 	UserVo authUser = (UserVo)session.getAttribute("authUser");
-
+	UserVo userVo = (UserVo)session.getAttribute("userVo");
 %>
 <!DOCTYPE html>
 <html>
@@ -36,42 +36,43 @@
 			<div id="content">
 			
 				<div id="content-head">
-					<h3>회원가입</h3>
+					<h3>회원정보</h3>
 					<div id="location">
 						<ul>
 							<li>홈</li>
 							<li>회원</li>
-							<li class="last">회원가입</li>
+							<li class="last">회원정보</li>
 						</ul>
 					</div>
 					<div class="clear"></div>
 				</div>
-				<!-- //content-head -->
+				 <!-- //content-head -->
 	
 				<div id="user">
-					<div id="joinForm">
-						<form action="http://localhost:8080/mysite3/user" method="get">
-	
+					<div id="modifyForm">
+						<form action="/mysite3/user" method="get">
+		
+							<input type="text" name="<%=authUser.getNo() %>">
 							<!-- 아이디 -->
 							<div class="form-group">
 								<label class="form-text" for="input-uid">아이디</label> 
-								<input type="text" id="input-uid" name="id" value="" placeholder="아이디를 입력하세요">
-								<button type="button" id="">중복체크</button>
+								<input type="hidden" id="input-uid" name="id" value="<%=userVo.getId() %>">
+								<span class="text-large bold"><%=userVo.getId() %></span>
 							</div>
 	
 							<!-- 비밀번호 -->
 							<div class="form-group">
 								<label class="form-text" for="input-pass">패스워드</label> 
-								<input type="text" id="input-pass" name="password" value="" placeholder="비밀번호를 입력하세요"	>
+								<input type="text" id="input-pass" name="password" value="<%=userVo.getPw() %>" placeholder="비밀번호를 입력하세요"	>
 							</div>
 	
-							<!-- 이메일 -->
+							<!-- 이름 -->
 							<div class="form-group">
 								<label class="form-text" for="input-name">이름</label> 
-								<input type="text" id="input-name" name="name" value="" placeholder="이름을 입력하세요">
+								<input type="text" id="input-name" name="name" value="<%=authUser.getName() %>" placeholder="이름을 입력하세요">
 							</div>
 	
-							<!-- //나이 -->
+							<!-- 성별 -->
 							<div class="form-group">
 								<span class="form-text">성별</span> 
 								
@@ -83,35 +84,29 @@
 	
 							</div>
 	
-							<!-- 약관동의 -->
-							<div class="form-group">
-								<span class="form-text">약관동의</span> 
-								
-								<input type="checkbox" id="chk-agree" value="" name="">
-								<label for="chk-agree">서비스 약관에 동의합니다.</label> 
-							</div>
-							
 							<!-- 버튼영역 -->
+							<input type=text name="action" value="modify">
 							<div class="button-area">
-								<button type="submit" id="btn-submit">회원가입</button>
+								<button type="submit" id="btn-submit">회원정보수정</button>
 							</div>
-							
-							<input type="text" name="action" value="join">
 							
 						</form>
+					
+					
 					</div>
-					<!-- //joinForm -->
+					<!-- //modifyForm -->
 				</div>
 				<!-- //user -->
 			</div>
 			<!-- //content  -->
+
 		</div>
 		<!-- //container  -->
-		
+
 		<!-- footer.jsp를 불러와라 -->
 		<jsp:include page="/WEB-INF/views/include/footer.jsp"></jsp:include>
 		<!-- //footer -->
-
+		
 	</div>
 	<!-- //wrap -->
 

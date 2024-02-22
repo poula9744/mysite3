@@ -61,7 +61,6 @@ public class UserDao {
 
 		int count = -1;
 
-		
 		this.getConnection();
 
 		try {
@@ -85,9 +84,79 @@ public class UserDao {
 
 		} catch (SQLException e) {
 			System.out.println("error:" + e);
-		} this.close();
-		
+		}
+		this.close();
 
 		return count;
 	}
+
+	public UserVo selectUserByIdPw(UserVo userVo) {
+		UserVo authUser = null; // 로그인 실패하면 null이 감
+
+		this.getConnection();
+
+		try {
+			// 3. SQL문 준비 / 바인딩 / 실행
+			String query = "";
+			query += " select no, ";
+			query += " 		  name ";
+			query += " from users ";
+			query += " where id=? ";
+			query += " and password=? ";
+
+			// - 바인딩
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, userVo.getId());
+			pstmt.setString(2, userVo.getPw());
+
+			// - 실행
+			rs = pstmt.executeQuery();
+
+			// 4.결과처리
+			while (rs.next()) {
+				int no = rs.getInt("no");
+				String name = rs.getString("name");
+				authUser = new UserVo(); // 인증용도로 쓸 계정
+				authUser.setNo(no);
+				authUser.setName(name);
+			}
+
+		} catch (Exception e) {
+		}
+		this.close();
+
+		return authUser;
+	}
+
+	public int modifyUser(UserVo userVo) {
+		int count = -1;
+		this.getConnection();
+
+		try {
+			// 3. SQL문 준비 / 바인딩 / 실행
+			String query = "";
+			query += " update users ";
+			query += " set name= ?, ";
+			query += "     password= ?, ";
+			query += "     gender=? ";
+			query += " where id = ? ";
+
+			// - 바인딩
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, userVo.getName());
+			pstmt.setString(2, userVo.getPw());
+			pstmt.setString(3, userVo.getGender());
+			pstmt.setString(3, userVo.getId());
+
+			// - 실행
+			count = pstmt.executeUpdate();
+
+		
+
+		} catch (Exception e) {
+		}
+		this.close();
+		return count;
+	}
+
 }
