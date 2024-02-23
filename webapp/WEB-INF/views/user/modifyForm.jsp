@@ -52,7 +52,7 @@
 					<div id="modifyForm">
 						<form action="/mysite3/user" method="get">
 		
-							<input type="text" name="<%=authUser.getNo() %>">
+							<input type="text" name="no" value="<%=authUser.getNo() %>">
 							<!-- 아이디 -->
 							<div class="form-group">
 								<label class="form-text" for="input-uid">아이디</label> 

@@ -128,7 +128,7 @@ public class UserDao {
 		return authUser;
 	}
 
-	public int modifyUser(UserVo userVo) {
+	public int modifyUser(int no, String id, String password, String name, String gender) {
 		int count = -1;
 		this.getConnection();
 
@@ -143,10 +143,10 @@ public class UserDao {
 
 			// - 바인딩
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, userVo.getName());
-			pstmt.setString(2, userVo.getPw());
-			pstmt.setString(3, userVo.getGender());
-			pstmt.setString(3, userVo.getId());
+			pstmt.setString(1, name);
+			pstmt.setString(2, password);
+			pstmt.setString(3, gender);
+			pstmt.setString(3, id);
 
 			// - 실행
 			count = pstmt.executeUpdate();

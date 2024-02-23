@@ -101,26 +101,33 @@ public class UserController extends HttpServlet {
 		} else if("modify".equals(action)) {
 			System.out.println("user>modify");
 			
-			//파라미터에서 데이터 꺼내기
+			//파라미터 가져오기
+			int no = Integer.parseInt(request.getParameter("no"));
+			String id = request.getParameter("id"); 
+			String name = request.getParameter("name"); 
 			String password = request.getParameter("password");
-			String name = request.getParameter("name");
-			String gender = request.getParameter("gender");
+		    String gender = request.getParameter("gender");
+		    
+		    System.out.println(no);
+		    System.out.println(id);
+		    System.out.println(name);
+		    System.out.println(password);
+		    System.out.println(gender);
+		    
+		    UserDao userDao = new UserDao();
+		    userDao.modifyUser(no, id, password, name, gender);
+		    
+		    // 수정된 정보로 사용자 객체 업데이트
+		    UserVo modifiedUser = new UserVo(no, id, password, name, gender);
+
+		    // 세션에서 기존 사용자 정보 가져오기
+		    HttpSession session = request.getSession();
+		    UserVo authUser = (UserVo) session.getAttribute("authUser");
+
+		    // 세션에 수정된 사용자 정보 업데이트	    
+		    session.setAttribute("authUser", modifiedUser);
 			
-			//데이터를 Vo로 묶기
-			UserVo userVo = new UserVo(password, name, gender);
-			System.out.println(userVo);
-			
-			
-			
-			//dao의 메소드로 수정 
-			UserDao userDao = new UserDao();
-			
-			UserVo authUser = userDao.modifyUser(userVo);
-			
-			HttpSession session = request.getSession();
-			session.setAttribute("authUser", authUser);
-			
-			//WebUtil.redirect(request, response, "/mysite3/main");
+			WebUtil.forward(request, response, "/WEB-INF/views/main/index.jsp");
 			
 		} else {
 			System.out.println("action값을 다시 확인해주세요.");
