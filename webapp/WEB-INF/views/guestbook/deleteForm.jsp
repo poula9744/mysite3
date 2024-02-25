@@ -1,15 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.util.List" %>
-<%@ page import="com.javaex.vo.GuestVo" %>
-
-<%
-	List<GuestVo> guestList = (List<GuestVo>) request.getAttribute("guestList");	
-%>
-<%
-	int id = Integer.parseInt(request.getParameter("no"));
-	String password = request.getParameter("password");
-%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -68,7 +59,7 @@
 								<td><a href="/mysite3/gbc?action=wform">[메인으로 돌아가기]</a></td>
 							</tr>
 						</table>
-						<input type='hidden' name="no" value="<%=id %>">
+						<input type='hidden' name="no" value="${param.no}">
 						<input type='hidden' name="action" value="delete">
 					</form>
 					

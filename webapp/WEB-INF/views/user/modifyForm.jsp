@@ -1,10 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="com.javaex.vo.UserVo" %>
-<%
-	UserVo authUser = (UserVo)session.getAttribute("authUser");
-	UserVo userVo = (UserVo)session.getAttribute("userVo");
-%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -52,24 +48,24 @@
 					<div id="modifyForm">
 						<form action="/mysite3/user" method="get">
 		
-							<input type="text" name="no" value="<%=authUser.getNo() %>">
+							<input type="text" name="no" value="${authorUser.no}">
 							<!-- 아이디 -->
 							<div class="form-group">
 								<label class="form-text" for="input-uid">아이디</label> 
-								<input type="hidden" id="input-uid" name="id" value="<%=userVo.getId() %>">
-								<span class="text-large bold"><%=userVo.getId() %></span>
+								<input type="hidden" id="input-uid" name="id" value="${userVo.id}">
+								<span class="text-large bold">${userVo.id}</span>
 							</div>
 	
 							<!-- 비밀번호 -->
 							<div class="form-group">
 								<label class="form-text" for="input-pass">패스워드</label> 
-								<input type="text" id="input-pass" name="password" value="<%=userVo.getPw() %>" placeholder="비밀번호를 입력하세요"	>
+								<input type="text" id="input-pass" name="password" value="${userVo.password}" placeholder="비밀번호를 입력하세요"	>
 							</div>
 	
 							<!-- 이름 -->
 							<div class="form-group">
 								<label class="form-text" for="input-name">이름</label> 
-								<input type="text" id="input-name" name="name" value="<%=authUser.getName() %>" placeholder="이름을 입력하세요">
+								<input type="text" id="input-name" name="name" value="${userVo.name}" placeholder="이름을 입력하세요">
 							</div>
 	
 							<!-- 성별 -->
